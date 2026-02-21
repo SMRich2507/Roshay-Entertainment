@@ -1595,11 +1595,13 @@
 
   <!-- ===== PRIVATE LESSONS MODAL ===== -->
   <div class="service-modal-overlay" id="privateLessonsModal">
+    <!-- Close button outside scroll container so it's always clickable -->
+    <button class="service-modal-close" id="plModalClose" aria-label="Close modal" style="position:fixed;top:1.25rem;right:1.25rem;z-index:110;">&times;</button>
     <div class="pl-modal">
-      <!-- Floating title + close -->
-      <div class="reel-title">
+      <!-- Floating title -->
+      <div class="reel-title" style="pointer-events:none;">
         <h3 class="font-display text-xl md:text-2xl uppercase text-cream tracking-[0.15em]" style="text-shadow:0 2px 12px rgba(0,0,0,0.8);">Private Lessons</h3>
-        <button class="service-modal-close" id="plModalClose" aria-label="Close modal">&times;</button>
+        <span style="width:44px;"></span>
       </div>
 
       <!-- Auto-scrolling reel -->
@@ -1738,11 +1740,13 @@
 
   <!-- ===== WORK FUNCTIONS MODAL ===== -->
   <div class="service-modal-overlay" id="workFunctionsModal">
+    <!-- Close button outside scroll container so it's always clickable -->
+    <button class="service-modal-close" id="wfModalClose" aria-label="Close modal" style="position:fixed;top:1.25rem;right:1.25rem;z-index:110;">&times;</button>
     <div class="pl-modal">
-      <!-- Floating title + close -->
-      <div class="reel-title">
+      <!-- Floating title -->
+      <div class="reel-title" style="pointer-events:none;">
         <h3 class="font-display text-xl md:text-2xl uppercase text-cream tracking-[0.15em]" style="text-shadow:0 2px 12px rgba(0,0,0,0.8);">Work Functions</h3>
-        <button class="service-modal-close" id="wfModalClose" aria-label="Close modal">&times;</button>
+        <span style="width:44px;"></span>
       </div>
 
       <!-- Auto-scrolling reel -->
