@@ -487,6 +487,117 @@
     }
     .service-card:active { transform: translateY(-1px); }
 
+    /* ========== SERVICE MODAL ========== */
+    .service-modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+    .service-modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .service-modal {
+      position: relative;
+      width: 90vw;
+      max-width: 1100px;
+      max-height: 85vh;
+      background: #141414;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.6), 0 0 60px rgba(255,193,66,0.06);
+      border: 1px solid rgba(255,193,66,0.12);
+      transform: translateY(30px) scale(0.96);
+      transition: transform 0.35s ease;
+    }
+    .service-modal-overlay.active .service-modal {
+      transform: translateY(0) scale(1);
+    }
+    .service-modal-header {
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid rgba(255,193,66,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .service-modal-close {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid rgba(240,235,227,0.2);
+      background: transparent;
+      color: #F0EBE3;
+      font-size: 1.25rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+    .service-modal-close:hover {
+      background: rgba(239,0,0,0.15);
+      border-color: #EF0000;
+    }
+    .service-modal-close:focus-visible {
+      outline: 2px solid #FFC142;
+      outline-offset: 2px;
+    }
+    .service-modal-body {
+      padding: 2rem;
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+    }
+    .video-scroll-row {
+      display: flex;
+      gap: 1.25rem;
+      padding-bottom: 0.5rem;
+    }
+    .video-placeholder {
+      flex-shrink: 0;
+      width: 320px;
+      height: 220px;
+      border-radius: 12px;
+      background: #0A0A0A;
+      border: 1px solid rgba(255,193,66,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      transition: border-color 0.3s ease, transform 0.3s ease;
+    }
+    .video-placeholder:hover {
+      border-color: rgba(255,193,66,0.3);
+      transform: translateY(-2px);
+    }
+    .video-placeholder svg {
+      opacity: 0.4;
+    }
+    /* Custom scrollbar for video row */
+    .service-modal-body::-webkit-scrollbar {
+      height: 6px;
+    }
+    .service-modal-body::-webkit-scrollbar-track {
+      background: rgba(255,255,255,0.03);
+      border-radius: 3px;
+    }
+    .service-modal-body::-webkit-scrollbar-thumb {
+      background: rgba(255,193,66,0.25);
+      border-radius: 3px;
+    }
+    .service-modal-body::-webkit-scrollbar-thumb:hover {
+      background: rgba(255,193,66,0.4);
+    }
+
     /* ========== MEDIA TRACK CARDS ========== */
     .track-card {
       flex-shrink: 0;
@@ -779,7 +890,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
 
       <!-- Card: Group Classes -->
-      <div class="service-card reveal" tabindex="0">
+      <div class="service-card reveal" tabindex="0" id="groupClassesCard" role="button" aria-label="View Group Classes videos">
         <div class="text-4xl mb-4">
           <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#FFC142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M5.5 21a6.5 6.5 0 0 1 13 0"/><circle cx="4" cy="9" r="2.5"/><path d="M2 21a4 4 0 0 1 4.5-4"/><circle cx="20" cy="9" r="2.5"/><path d="M22 21a4 4 0 0 0-4.5-4"/></svg>
         </div>
@@ -1121,6 +1232,78 @@
         });
       });
 
+    })();
+  </script>
+
+  <!-- ===== GROUP CLASSES VIDEO MODAL ===== -->
+  <div class="service-modal-overlay" id="groupClassesModal">
+    <div class="service-modal">
+      <div class="service-modal-header">
+        <h3 class="font-display text-2xl md:text-3xl uppercase text-cream tracking-wider">Group Classes</h3>
+        <button class="service-modal-close" id="modalClose" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="service-modal-body">
+        <div class="video-scroll-row">
+          <!-- Video Placeholder 1 -->
+          <div class="video-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#FFC142" stroke-width="1.5"><polygon points="5,3 19,12 5,21"/></svg>
+            <span class="font-body text-cream/40 text-xs uppercase tracking-wider">Salsa Class</span>
+          </div>
+          <!-- Video Placeholder 2 -->
+          <div class="video-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#FFC142" stroke-width="1.5"><polygon points="5,3 19,12 5,21"/></svg>
+            <span class="font-body text-cream/40 text-xs uppercase tracking-wider">Bachata Class</span>
+          </div>
+          <!-- Video Placeholder 3 -->
+          <div class="video-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#FFC142" stroke-width="1.5"><polygon points="5,3 19,12 5,21"/></svg>
+            <span class="font-body text-cream/40 text-xs uppercase tracking-wider">Hip Hop Class</span>
+          </div>
+          <!-- Video Placeholder 4 -->
+          <div class="video-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#FFC142" stroke-width="1.5"><polygon points="5,3 19,12 5,21"/></svg>
+            <span class="font-body text-cream/40 text-xs uppercase tracking-wider">Reggaeton Class</span>
+          </div>
+          <!-- Video Placeholder 5 -->
+          <div class="video-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#FFC142" stroke-width="1.5"><polygon points="5,3 19,12 5,21"/></svg>
+            <span class="font-body text-cream/40 text-xs uppercase tracking-wider">Community Night</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===== GROUP CLASSES MODAL =====
+    (function() {
+      const card = document.getElementById('groupClassesCard');
+      const modal = document.getElementById('groupClassesModal');
+      const closeBtn = document.getElementById('modalClose');
+      if (!card || !modal || !closeBtn) return;
+
+      function openModal() {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        closeBtn.focus();
+      }
+      function closeModal() {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+        card.focus();
+      }
+
+      card.addEventListener('click', openModal);
+      card.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(); }
+      });
+      closeBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) closeModal();
+      });
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+      });
     })();
   </script>
 
