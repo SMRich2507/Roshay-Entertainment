@@ -582,7 +582,7 @@
       width: max-content;
       animation: reelScroll 30s linear infinite;
     }
-    .reel-track:hover {
+    .reel-track.paused {
       animation-play-state: paused;
     }
     @keyframes reelScroll {
@@ -596,6 +596,7 @@
       position: relative;
       overflow: hidden;
       background: #0A0A0A;
+      cursor: pointer;
     }
     @media (min-width: 768px) {
       .reel-clip { width: 500px; height: 320px; }
@@ -639,6 +640,66 @@
     .reel-dot.active {
       background: #FFC142;
       box-shadow: 0 0 8px rgba(255,193,66,0.4);
+    }
+    /* Enlarged clip view */
+    .reel-enlarged {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(0,0,0,0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .reel-enlarged.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .reel-enlarged-inner {
+      width: 90vw;
+      max-width: 900px;
+      aspect-ratio: 16/9;
+      background: #0A0A0A;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      position: relative;
+      transform: scale(0.9);
+      transition: transform 0.3s ease;
+    }
+    .reel-enlarged.active .reel-enlarged-inner {
+      transform: scale(1);
+    }
+    .reel-enlarged-label {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 2rem;
+    }
+    .reel-enlarged-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255,255,255,0.1);
+      color: #F0EBE3;
+      font-size: 1.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s ease;
+    }
+    .reel-enlarged-close:hover {
+      background: rgba(239,0,0,0.4);
     }
 
     /* ========== MEDIA TRACK CARDS ========== */
@@ -1349,6 +1410,17 @@
     </div>
   </div>
 
+  <!-- Enlarged clip viewer -->
+  <div class="reel-enlarged" id="reelEnlarged">
+    <div class="reel-enlarged-inner" id="reelEnlargedContent">
+      <svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="rgba(255,193,66,0.4)" stroke-width="1"><polygon points="5,3 19,12 5,21"/></svg>
+      <div class="reel-enlarged-label">
+        <span class="font-display text-lg uppercase tracking-wider text-cream/70" id="reelEnlargedLabel"></span>
+      </div>
+      <button class="reel-enlarged-close" id="reelEnlargedClose" aria-label="Close enlarged view">&times;</button>
+    </div>
+  </div>
+
   <script>
     // ===== GROUP CLASSES HIGHLIGHT REEL =====
     (function() {
@@ -1356,6 +1428,10 @@
       const modal = document.getElementById('groupClassesModal');
       const closeBtn = document.getElementById('modalClose');
       const track = document.getElementById('reelTrack');
+      const enlarged = document.getElementById('reelEnlarged');
+      const enlargedContent = document.getElementById('reelEnlargedContent');
+      const enlargedLabel = document.getElementById('reelEnlargedLabel');
+      const enlargedClose = document.getElementById('reelEnlargedClose');
       if (!card || !modal || !closeBtn || !track) return;
 
       // Duplicate clips for seamless infinite scroll
@@ -1368,8 +1444,22 @@
       }
       function closeModal() {
         modal.classList.remove('active');
+        track.classList.remove('paused');
+        enlarged.classList.remove('active');
         document.body.style.overflow = '';
         card.focus();
+      }
+      function openEnlarged(clip) {
+        const label = clip.querySelector('.reel-clip-label span');
+        const bg = clip.querySelector('.reel-clip-inner').style.background;
+        enlargedLabel.textContent = label ? label.textContent : '';
+        enlargedContent.style.background = bg || '#0A0A0A';
+        track.classList.add('paused');
+        enlarged.classList.add('active');
+      }
+      function closeEnlarged() {
+        enlarged.classList.remove('active');
+        track.classList.remove('paused');
       }
 
       card.addEventListener('click', openModal);
@@ -1380,8 +1470,27 @@
       modal.addEventListener('click', function(e) {
         if (e.target === modal) closeModal();
       });
+
+      // Click clip to enlarge
+      track.addEventListener('click', function(e) {
+        const clip = e.target.closest('.reel-clip');
+        if (clip) openEnlarged(clip);
+      });
+
+      // Close enlarged view
+      enlargedClose.addEventListener('click', closeEnlarged);
+      enlarged.addEventListener('click', function(e) {
+        if (e.target === enlarged) closeEnlarged();
+      });
+
       document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+        if (e.key === 'Escape') {
+          if (enlarged.classList.contains('active')) {
+            closeEnlarged();
+          } else if (modal.classList.contains('active')) {
+            closeModal();
+          }
+        }
       });
     })();
   </script>
