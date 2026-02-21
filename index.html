@@ -782,6 +782,102 @@
       outline-offset: 4px;
     }
 
+    /* ========== SOCIALS FLYER REEL ========== */
+    .flyer-reel-track {
+      display: flex;
+      width: max-content;
+      animation: reelScroll 40s linear infinite;
+    }
+    .flyer-reel-track.paused {
+      animation-play-state: paused;
+    }
+    .flyer-card {
+      flex-shrink: 0;
+      width: 300px;
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    @media (min-width: 768px) {
+      .flyer-card { width: 380px; }
+    }
+    .flyer-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+    .flyer-card:hover img {
+      transform: scale(1.03);
+    }
+    .flyer-card.past {
+      opacity: 0.35;
+      filter: grayscale(0.4);
+    }
+    .flyer-card.past:hover {
+      opacity: 0.6;
+      filter: grayscale(0.1);
+    }
+    .flyer-card.upcoming {
+      opacity: 1;
+      box-shadow: 0 0 40px rgba(255,193,66,0.2), 0 0 80px rgba(255,193,66,0.08);
+    }
+    .flyer-card.upcoming::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 2px solid rgba(255,193,66,0.4);
+      pointer-events: none;
+    }
+    .flyer-date-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(4px);
+      padding: 4px 10px;
+      border-radius: 6px;
+      z-index: 2;
+    }
+    .flyer-upcoming-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: #FFC142;
+      color: #0A0A0A;
+      padding: 4px 12px;
+      border-radius: 6px;
+      z-index: 2;
+    }
+    /* Enlarged flyer view */
+    .flyer-enlarged {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(0,0,0,0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .flyer-enlarged.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .flyer-enlarged img {
+      max-width: 90vw;
+      max-height: 85vh;
+      object-fit: contain;
+      border-radius: 8px;
+      transform: scale(0.9);
+      transition: transform 0.3s ease;
+    }
+    .flyer-enlarged.active img {
+      transform: scale(1);
+    }
+
     /* ========== MEDIA TRACK CARDS ========== */
     .track-card {
       flex-shrink: 0;
@@ -1101,7 +1197,7 @@
       </div>
 
       <!-- Card: Socials -->
-      <div class="service-card reveal" tabindex="0" style="transition-delay:0.3s;">
+      <div class="service-card reveal" tabindex="0" style="transition-delay:0.3s;" id="socialsCard" role="button" aria-label="View upcoming and past socials">
         <div class="text-4xl mb-4">
           <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#FFC142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
         </div>
@@ -1774,6 +1870,172 @@
       });
       document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+      });
+    })();
+  </script>
+
+  <!-- ===== SOCIALS MODAL ===== -->
+  <div class="service-modal-overlay" id="socialsModal">
+    <div class="service-modal">
+      <!-- Floating title + close -->
+      <div class="reel-title">
+        <h3 class="font-display text-xl md:text-2xl uppercase text-cream tracking-[0.15em]" style="text-shadow:0 2px 12px rgba(0,0,0,0.8);">Socials</h3>
+        <button class="service-modal-close" id="socialsModalClose" aria-label="Close modal">&times;</button>
+      </div>
+
+      <!-- Auto-scrolling flyer reel -->
+      <div class="reel-track-wrapper">
+        <div class="flyer-reel-track" id="socialsReelTrack">
+          <!-- UPCOMING: Next Event -->
+          <div class="flyer-card upcoming" data-date="upcoming">
+            <div class="flyer-upcoming-badge">
+              <span class="font-display text-xs uppercase tracking-wider font-bold">Next Event</span>
+            </div>
+            <div style="width:100%;aspect-ratio:4/5;background:linear-gradient(135deg,#1a0f00 0%,#0A0A0A 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;">
+              <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#FFC142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+              </svg>
+              <span class="font-display text-lg uppercase tracking-wider text-caribbean-gold">Coming Soon</span>
+              <span class="font-body text-cream/40 text-xs">Stay tuned for the next social</span>
+            </div>
+          </div>
+          <!-- PAST: Feb 14 — Valentine's Edition -->
+          <div class="flyer-card past" data-date="2026-02-14">
+            <div class="flyer-date-badge">
+              <span class="font-body text-cream/70 text-xs">Feb 14</span>
+            </div>
+            <img src="assets/socials/04-feb14-valentine.jpg" alt="Valentine's Edition Salsa & Bachata Social — Feb 14" loading="lazy"/>
+          </div>
+          <!-- PAST: Dec 27 — End of Year -->
+          <div class="flyer-card past" data-date="2025-12-27">
+            <div class="flyer-date-badge">
+              <span class="font-body text-cream/70 text-xs">Dec 27</span>
+            </div>
+            <img src="assets/socials/03-dec27-endofyear.jpg" alt="End of Year Salsa Bachata Social — Dec 27" loading="lazy"/>
+          </div>
+          <!-- PAST: Dec 20 — Christmas Party -->
+          <div class="flyer-card past" data-date="2025-12-20">
+            <div class="flyer-date-badge">
+              <span class="font-body text-cream/70 text-xs">Dec 20</span>
+            </div>
+            <img src="assets/socials/02-dec20-christmas.jpg" alt="Ventanas Christmas Party — Dec 20" loading="lazy"/>
+          </div>
+          <!-- PAST: Nov 26 — Thanksgiving Eve -->
+          <div class="flyer-card past" data-date="2025-11-26">
+            <div class="flyer-date-badge">
+              <span class="font-body text-cream/70 text-xs">Nov 26</span>
+            </div>
+            <img src="assets/socials/01-nov26-thanksgiving.jpg" alt="Thanksgiving Eve Salsa & Bachata Class — Nov 26" loading="lazy"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dots -->
+      <div class="reel-dots-wrapper" id="socialsDotsWrapper">
+        <div class="reel-dots" id="socialsDots"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enlarged flyer viewer -->
+  <div class="flyer-enlarged" id="flyerEnlarged">
+    <img src="" alt="Enlarged flyer" id="flyerEnlargedImg"/>
+    <button class="reel-enlarged-close" id="flyerEnlargedClose" aria-label="Close enlarged view" style="position:absolute;top:1rem;right:1rem;">&times;</button>
+  </div>
+
+  <script>
+    // ===== SOCIALS MODAL =====
+    (function() {
+      const card = document.getElementById('socialsCard');
+      const modal = document.getElementById('socialsModal');
+      const closeBtn = document.getElementById('socialsModalClose');
+      const track = document.getElementById('socialsReelTrack');
+      const dotsContainer = document.getElementById('socialsDots');
+      const enlarged = document.getElementById('flyerEnlarged');
+      const enlargedImg = document.getElementById('flyerEnlargedImg');
+      const enlargedClose = document.getElementById('flyerEnlargedClose');
+      if (!card || !modal || !closeBtn || !track || !dotsContainer) return;
+
+      const originalCards = track.querySelectorAll('.flyer-card');
+      const cardCount = originalCards.length;
+
+      for (let i = 0; i < cardCount; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'reel-dot' + (i === (cardCount - 1) ? ' active' : '');
+        dot.dataset.index = i;
+        dotsContainer.appendChild(dot);
+      }
+      const dots = dotsContainer.querySelectorAll('.reel-dot');
+
+      track.innerHTML += track.innerHTML;
+
+      let dotRAF;
+      function updateDots() {
+        const style = getComputedStyle(track);
+        const matrix = new DOMMatrix(style.transform);
+        const scrollX = Math.abs(matrix.m41);
+        const cardWidth = track.scrollWidth / (cardCount * 2);
+        const rawIndex = Math.floor(scrollX / cardWidth) % cardCount;
+        const activeIndex = (cardCount - 1) - rawIndex;
+        dots.forEach(function(d, i) { d.classList.toggle('active', i === activeIndex); });
+        dotRAF = requestAnimationFrame(updateDots);
+      }
+
+      function openModal() {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        closeBtn.focus();
+        dotRAF = requestAnimationFrame(updateDots);
+      }
+      function closeModal() {
+        modal.classList.remove('active');
+        track.classList.remove('paused');
+        enlarged.classList.remove('active');
+        document.body.style.overflow = '';
+        cancelAnimationFrame(dotRAF);
+        card.focus();
+      }
+
+      // Click flyer to enlarge
+      track.addEventListener('click', function(e) {
+        const flyerCard = e.target.closest('.flyer-card');
+        if (!flyerCard) return;
+        const img = flyerCard.querySelector('img');
+        if (!img) return; // skip "Coming Soon" placeholder
+        enlargedImg.src = img.src;
+        enlargedImg.alt = img.alt;
+        track.classList.add('paused');
+        enlarged.classList.add('active');
+      });
+
+      function closeEnlarged() {
+        enlarged.classList.remove('active');
+        track.classList.remove('paused');
+      }
+
+      card.addEventListener('click', openModal);
+      card.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(); }
+      });
+      closeBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) closeModal();
+      });
+      enlargedClose.addEventListener('click', closeEnlarged);
+      enlarged.addEventListener('click', function(e) {
+        if (e.target === enlarged) closeEnlarged();
+      });
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          if (enlarged.classList.contains('active')) {
+            closeEnlarged();
+          } else if (modal.classList.contains('active')) {
+            closeModal();
+          }
+        }
       });
     })();
   </script>
