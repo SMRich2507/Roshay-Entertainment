@@ -1472,11 +1472,8 @@
         const matrix = new DOMMatrix(style.transform);
         const scrollX = Math.abs(matrix.m41);
         const clipWidth = track.scrollWidth / (clipCount * 2);
-        const wrappedX = scrollX % (clipWidth * clipCount);
-        // Which clip is at center of viewport
-        const wrapperWidth = track.parentElement.offsetWidth;
-        const centerX = wrappedX + wrapperWidth / 2;
-        const activeIndex = Math.floor(centerX / clipWidth) % clipCount;
+        // Which clip is at the left edge of the viewport
+        const activeIndex = Math.floor(scrollX / clipWidth) % clipCount;
 
         dots.forEach(function(d, i) {
           d.classList.toggle('active', i === activeIndex);
