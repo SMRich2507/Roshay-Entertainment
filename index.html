@@ -625,21 +625,38 @@
       z-index: 2;
     }
     /* Progress dots */
+    .reel-dots-wrapper {
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      padding: 1rem 1.5rem;
+      scrollbar-width: none;
+    }
+    .reel-dots-wrapper::-webkit-scrollbar { display: none; }
     .reel-dots {
       display: flex;
-      justify-content: center;
-      gap: 8px;
-      padding: 1rem 0;
+      gap: 10px;
+      width: max-content;
+      margin: 0 auto;
+      cursor: grab;
     }
+    .reel-dots.dragging { cursor: grabbing; }
     .reel-dot {
-      width: 6px;
-      height: 6px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
-      background: rgba(255,193,66,0.25);
+      background: rgba(255,193,66,0.2);
+      flex-shrink: 0;
+      transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+    .reel-dot:hover {
+      background: rgba(255,193,66,0.5);
     }
     .reel-dot.active {
       background: #FFC142;
-      box-shadow: 0 0 8px rgba(255,193,66,0.4);
+      transform: scale(1.4);
+      box-shadow: 0 0 10px rgba(255,193,66,0.5);
     }
     /* Enlarged clip view */
     .reel-enlarged {
@@ -1399,13 +1416,9 @@
         </div>
       </div>
 
-      <!-- Dots -->
-      <div class="reel-dots">
-        <div class="reel-dot active"></div>
-        <div class="reel-dot"></div>
-        <div class="reel-dot"></div>
-        <div class="reel-dot"></div>
-        <div class="reel-dot"></div>
+      <!-- Dots (generated dynamically from clip count) -->
+      <div class="reel-dots-wrapper" id="reelDotsWrapper">
+        <div class="reel-dots" id="reelDots"></div>
       </div>
     </div>
   </div>
@@ -1428,25 +1441,72 @@
       const modal = document.getElementById('groupClassesModal');
       const closeBtn = document.getElementById('modalClose');
       const track = document.getElementById('reelTrack');
+      const dotsContainer = document.getElementById('reelDots');
+      const dotsWrapper = document.getElementById('reelDotsWrapper');
       const enlarged = document.getElementById('reelEnlarged');
       const enlargedContent = document.getElementById('reelEnlargedContent');
       const enlargedLabel = document.getElementById('reelEnlargedLabel');
       const enlargedClose = document.getElementById('reelEnlargedClose');
-      if (!card || !modal || !closeBtn || !track) return;
+      if (!card || !modal || !closeBtn || !track || !dotsContainer) return;
+
+      // Count original clips before duplication
+      const originalClips = track.querySelectorAll('.reel-clip');
+      const clipCount = originalClips.length;
+
+      // Generate dots — one per original clip
+      for (let i = 0; i < clipCount; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'reel-dot' + (i === 0 ? ' active' : '');
+        dot.dataset.index = i;
+        dotsContainer.appendChild(dot);
+      }
+      const dots = dotsContainer.querySelectorAll('.reel-dot');
 
       // Duplicate clips for seamless infinite scroll
       track.innerHTML += track.innerHTML;
+
+      // Track scroll position and update active dot
+      let dotRAF;
+      function updateDots() {
+        const style = getComputedStyle(track);
+        const matrix = new DOMMatrix(style.transform);
+        const scrollX = Math.abs(matrix.m41);
+        const clipWidth = track.scrollWidth / (clipCount * 2);
+        const wrappedX = scrollX % (clipWidth * clipCount);
+        // Which clip is at center of viewport
+        const wrapperWidth = track.parentElement.offsetWidth;
+        const centerX = wrappedX + wrapperWidth / 2;
+        const activeIndex = Math.floor(centerX / clipWidth) % clipCount;
+
+        dots.forEach(function(d, i) {
+          d.classList.toggle('active', i === activeIndex);
+        });
+
+        // Auto-scroll dots wrapper to keep active dot visible
+        const activeDot = dots[activeIndex];
+        if (activeDot && dotsWrapper) {
+          const dotLeft = activeDot.offsetLeft;
+          const dotW = activeDot.offsetWidth;
+          const wW = dotsWrapper.offsetWidth;
+          const scrollTarget = dotLeft - wW / 2 + dotW / 2;
+          dotsWrapper.scrollLeft = scrollTarget;
+        }
+
+        dotRAF = requestAnimationFrame(updateDots);
+      }
 
       function openModal() {
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
         closeBtn.focus();
+        dotRAF = requestAnimationFrame(updateDots);
       }
       function closeModal() {
         modal.classList.remove('active');
         track.classList.remove('paused');
         enlarged.classList.remove('active');
         document.body.style.overflow = '';
+        cancelAnimationFrame(dotRAF);
         card.focus();
       }
       function openEnlarged(clip) {
@@ -1461,6 +1521,51 @@
         enlarged.classList.remove('active');
         track.classList.remove('paused');
       }
+
+      // Click dot to jump to that clip (briefly pause, scroll, resume)
+      dotsContainer.addEventListener('click', function(e) {
+        const dot = e.target.closest('.reel-dot');
+        if (!dot) return;
+        const idx = parseInt(dot.dataset.index);
+        const clipWidth = track.scrollWidth / (clipCount * 2);
+        // Pause animation, set position, resume
+        track.style.animation = 'none';
+        track.offsetHeight; // force reflow
+        const targetX = clipWidth * idx;
+        track.style.transform = 'translateX(-' + targetX + 'px)';
+        setTimeout(function() {
+          track.style.animation = '';
+          track.style.transform = '';
+          // Adjust animation delay so it continues from this position
+          const totalWidth = clipWidth * clipCount;
+          const fraction = targetX / totalWidth;
+          const duration = 30; // matches CSS
+          track.style.animationDelay = '-' + (fraction * duration) + 's';
+        }, 50);
+      });
+
+      // Drag-scroll for dots on mobile/desktop
+      let isDragging = false, startX, scrollLeft;
+      dotsWrapper.addEventListener('mousedown', function(e) {
+        isDragging = true;
+        dotsContainer.classList.add('dragging');
+        startX = e.pageX - dotsWrapper.offsetLeft;
+        scrollLeft = dotsWrapper.scrollLeft;
+      });
+      dotsWrapper.addEventListener('mouseleave', function() {
+        isDragging = false;
+        dotsContainer.classList.remove('dragging');
+      });
+      dotsWrapper.addEventListener('mouseup', function() {
+        isDragging = false;
+        dotsContainer.classList.remove('dragging');
+      });
+      dotsWrapper.addEventListener('mousemove', function(e) {
+        if (!isDragging) return;
+        e.preventDefault();
+        const x = e.pageX - dotsWrapper.offsetLeft;
+        dotsWrapper.scrollLeft = scrollLeft - (x - startX);
+      });
 
       card.addEventListener('click', openModal);
       card.addEventListener('keydown', function(e) {
