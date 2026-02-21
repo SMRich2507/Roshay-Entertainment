@@ -964,21 +964,6 @@
       50% { opacity: 1; transform: scale(1.15) rotate(20deg); }
     }
 
-    /* ========== DIAGONAL DIVIDER (desktop) ========== */
-    @media (min-width: 1024px) {
-      .identity-divider {
-        position: absolute;
-        top: 0;
-        left: 50%;
-        width: 80px;
-        height: 100%;
-        transform: translateX(-50%);
-        background: linear-gradient(135deg, #0D0A0B 49.5%, transparent 49.5%, transparent 50.5%, #141414 50.5%);
-        z-index: 10;
-        pointer-events: none;
-      }
-    }
-
     /* ========== PLAY BUTTON ========== */
     .play-btn {
       transition: transform 0.3s ease, opacity 0.3s ease;
@@ -998,15 +983,6 @@
     ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
     ::-webkit-scrollbar-thumb:hover { background: #555; }
 
-    /* ========== DIAGONAL CLIP SECTION ========== */
-    @media (min-width: 1024px) {
-      .clip-left {
-        clip-path: polygon(0 0, 100% 0, 95% 100%, 0 100%);
-      }
-      .clip-right {
-        clip-path: polygon(5% 0, 100% 0, 100% 100%, 0 100%);
-      }
-    }
   </style>
 </head>
 <body>
@@ -1026,9 +1002,8 @@
     <a href="#" class="font-display text-cream text-lg tracking-[0.2em] uppercase" style="font-variant:small-caps;" aria-label="Home">ROSHAY ENTERTAINMENT</a>
     <div class="flex items-center gap-6 md:gap-8">
       <div class="hidden md:flex items-center gap-6">
-        <a href="#identity" class="nav-link font-body text-cream text-xs uppercase tracking-[0.1em]">About</a>
-        <a href="#services" class="nav-link font-body text-cream text-xs uppercase tracking-[0.1em]">Services</a>
-        <a href="#media" class="nav-link font-body text-cream text-xs uppercase tracking-[0.1em]">Music</a>
+        <a href="#artist" class="nav-link font-body text-cream text-xs uppercase tracking-[0.1em]">The Artist</a>
+        <a href="#instructor" class="nav-link font-body text-cream text-xs uppercase tracking-[0.1em]">The Instructor</a>
         <a href="#contact" class="nav-link font-body text-cream text-xs uppercase tracking-[0.1em]">Contact</a>
       </div>
       <a href="#contact" class="btn-book-nav">Book Now</a>
@@ -1107,178 +1082,174 @@
   </section>
 
 
-  <!-- ===== DUAL IDENTITY SPLIT SECTION ===== -->
-  <section id="identity" class="relative">
-    <div class="grid grid-cols-1 lg:grid-cols-2 min-h-[700px] lg:min-h-[800px]">
+  <!-- ===== THE ARTIST SECTION ===== -->
+  <section id="artist" class="relative" style="background:#0D0A0B;">
+    <div class="px-6 md:px-12 py-24 md:py-32 max-w-7xl mx-auto">
 
-      <!-- The Artist -->
-      <div class="clip-left relative px-6 md:px-12 py-16 md:py-24 flex flex-col justify-center items-stretch" style="background:#0D0A0B;">
-        <div class="neon-border-red rounded-xl p-6 md:p-10 relative z-10 flex-1 flex flex-col justify-center w-full">
-          <!-- Image -->
-          <div class="img-overlay img-overlay-red rounded-lg mb-8 overflow-hidden reveal">
-            <img src="https://placehold.co/600x800/1a1a1a/ef0000?text=The+Artist" alt="Roshay the Artist" class="w-full h-64 md:h-80 object-cover rounded-lg"/>
+      <!-- Artist Bio -->
+      <div class="flex flex-col lg:flex-row gap-10 lg:gap-16 items-center mb-20">
+        <!-- Image -->
+        <div class="lg:w-2/5 w-full">
+          <div class="neon-border-red rounded-xl p-1 reveal">
+            <div class="img-overlay img-overlay-red rounded-lg overflow-hidden">
+              <img src="https://placehold.co/600x800/1a1a1a/ef0000?text=The+Artist" alt="Roshay the Artist" class="w-full h-[400px] md:h-[500px] object-cover rounded-lg"/>
+            </div>
           </div>
-          <!-- Heading -->
-          <h2 class="font-display text-4xl md:text-5xl uppercase text-cream mb-4 reveal" style="text-shadow:0 0 30px rgba(239,0,0,0.5), 0 0 60px rgba(239,0,0,0.2);">The Artist</h2>
-          <!-- Pills -->
+        </div>
+        <!-- Text -->
+        <div class="lg:w-3/5 w-full">
+          <h2 class="font-display text-5xl md:text-7xl uppercase text-cream mb-4 reveal" style="text-shadow:0 0 30px rgba(239,0,0,0.5), 0 0 60px rgba(239,0,0,0.2);">The Artist</h2>
           <div class="flex flex-wrap gap-2 mb-6 reveal">
             <span class="pill-red">Hip Hop</span>
             <span class="pill-red">Rap</span>
             <span class="pill-red">Salsa</span>
             <span class="pill-red">Bachata</span>
           </div>
-          <!-- Description -->
-          <p class="font-body text-cream/80 text-sm md:text-base leading-relaxed reveal">
+          <p class="font-body text-cream/80 text-base md:text-lg leading-relaxed reveal">
             Born with the rhythm of Puerto Rico in his veins, Roshay brings an electrifying fusion of hip hop, rap, salsa, and bachata to every stage he touches. His music is a love letter to the island's streets and sounds, blending raw lyrical energy with Caribbean soul. Every performance is a full-body experience that leaves audiences moving, feeling, and wanting more.
           </p>
         </div>
       </div>
 
-      <!-- Diagonal Divider (desktop) -->
-      <div class="identity-divider hidden lg:block"></div>
-
-      <!-- The Instructor -->
-      <div class="clip-right relative px-6 md:px-12 py-16 md:py-24 flex flex-col justify-center items-stretch" style="background:#141414;">
-        <div class="neon-border-gold rounded-xl p-6 md:p-10 relative z-10 flex-1 flex flex-col justify-center w-full">
-          <!-- Image -->
-          <div class="img-overlay img-overlay-gold rounded-lg mb-8 overflow-hidden reveal">
-            <img src="https://placehold.co/600x800/1a1a1a/ffc142?text=The+Instructor" alt="Roshay the Instructor" class="w-full h-64 md:h-80 object-cover rounded-lg"/>
+      <!-- YouTube Videos -->
+      <h3 class="font-display text-3xl md:text-4xl uppercase text-cream text-center mb-10 reveal" style="text-shadow:0 0 30px rgba(239,0,0,0.15);">Music &amp; Performance</h3>
+      <div class="mb-16">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div class="reveal">
+            <div class="rounded-xl overflow-hidden" style="aspect-ratio:16/9;border:1px solid rgba(239,0,0,0.15);">
+              <iframe width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/KAlbrd9IpsU?modestbranding=1&rel=0&showinfo=0&color=white" title="Roshay Entertainment" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="display:block;"></iframe>
+            </div>
           </div>
-          <!-- Heading -->
-          <h2 class="font-display text-4xl md:text-5xl uppercase text-cream mb-4 reveal" style="text-shadow:0 0 30px rgba(255,193,66,0.5), 0 0 60px rgba(255,193,66,0.2);">The Instructor</h2>
-          <!-- Pills -->
+          <div class="reveal" style="transition-delay:0.1s;">
+            <div class="rounded-xl overflow-hidden" style="aspect-ratio:16/9;border:1px solid rgba(239,0,0,0.15);">
+              <iframe width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/S1jPxdA4KI4?modestbranding=1&rel=0&showinfo=0&color=white" title="Roshay Entertainment" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="display:block;"></iframe>
+            </div>
+          </div>
+          <div class="reveal" style="transition-delay:0.2s;">
+            <div class="rounded-xl overflow-hidden" style="aspect-ratio:16/9;border:1px solid rgba(239,0,0,0.15);">
+              <iframe width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/crbZXMulYWE?modestbranding=1&rel=0&showinfo=0&color=white" title="Roshay Entertainment" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="display:block;"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Track Cards -->
+      <div class="mb-16 reveal">
+        <div class="flex overflow-x-auto gap-4 pb-4" style="-webkit-overflow-scrolling:touch;">
+          <div class="track-card" tabindex="0">
+            <img src="https://placehold.co/200x200/141414/ef0000?text=Track+1" alt="Track 1" class="w-[200px] h-[200px] rounded-lg object-cover" style="box-shadow:0 4px 16px rgba(0,0,0,0.5);"/>
+            <p class="font-body text-cream text-sm mt-2">Track One</p>
+            <span class="font-body text-cream/40 text-xs">Hip Hop</span>
+          </div>
+          <div class="track-card" tabindex="0">
+            <img src="https://placehold.co/200x200/141414/ef0000?text=Track+2" alt="Track 2" class="w-[200px] h-[200px] rounded-lg object-cover" style="box-shadow:0 4px 16px rgba(0,0,0,0.5);"/>
+            <p class="font-body text-cream text-sm mt-2">Track Two</p>
+            <span class="font-body text-cream/40 text-xs">Reggaeton</span>
+          </div>
+          <div class="track-card" tabindex="0">
+            <img src="https://placehold.co/200x200/141414/ef0000?text=Track+3" alt="Track 3" class="w-[200px] h-[200px] rounded-lg object-cover" style="box-shadow:0 4px 16px rgba(0,0,0,0.5);"/>
+            <p class="font-body text-cream text-sm mt-2">Track Three</p>
+            <span class="font-body text-cream/40 text-xs">Rap</span>
+          </div>
+          <div class="track-card" tabindex="0">
+            <img src="https://placehold.co/200x200/141414/ef0000?text=Track+4" alt="Track 4" class="w-[200px] h-[200px] rounded-lg object-cover" style="box-shadow:0 4px 16px rgba(0,0,0,0.5);"/>
+            <p class="font-body text-cream text-sm mt-2">Track Four</p>
+            <span class="font-body text-cream/40 text-xs">Salsa</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Spotify Embed -->
+      <div class="max-w-lg mx-auto reveal">
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/artist/5JNwuIC1G493YYlfwjR2HA?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ===== THE INSTRUCTOR SECTION ===== -->
+  <section id="instructor" class="relative" style="background:#141414;">
+    <div class="px-6 md:px-12 py-24 md:py-32 max-w-7xl mx-auto">
+
+      <!-- Instructor Bio -->
+      <div class="flex flex-col lg:flex-row-reverse gap-10 lg:gap-16 items-center mb-20">
+        <!-- Image (right on desktop) -->
+        <div class="lg:w-2/5 w-full">
+          <div class="neon-border-gold rounded-xl p-1 reveal">
+            <div class="img-overlay img-overlay-gold rounded-lg overflow-hidden">
+              <img src="https://placehold.co/600x800/1a1a1a/ffc142?text=The+Instructor" alt="Roshay the Instructor" class="w-full h-[400px] md:h-[500px] object-cover rounded-lg"/>
+            </div>
+          </div>
+        </div>
+        <!-- Text (left on desktop) -->
+        <div class="lg:w-3/5 w-full">
+          <h2 class="font-display text-5xl md:text-7xl uppercase text-cream mb-4 reveal" style="text-shadow:0 0 30px rgba(255,193,66,0.5), 0 0 60px rgba(255,193,66,0.2);">The Instructor</h2>
           <div class="flex flex-wrap gap-2 mb-6 reveal">
             <span class="pill-gold">Salsa</span>
             <span class="pill-gold">Bachata</span>
             <span class="pill-gold">Hip Hop</span>
           </div>
-          <!-- Description -->
-          <p class="font-body text-cream/80 text-sm md:text-base leading-relaxed reveal">
+          <p class="font-body text-cream/80 text-base md:text-lg leading-relaxed reveal">
             Roshay teaches dance the way he lives it, with passion, patience, and an infectious energy that makes everyone feel like they belong on the floor. Whether you've never danced a step or you've been moving for years, his classes are built to meet you where you are and push you further. Community first, technique always, ego never.
           </p>
         </div>
       </div>
 
-    </div>
-  </section>
+      <!-- What I Offer -->
+      <h3 class="font-display text-3xl md:text-4xl uppercase text-cream text-center mb-10 reveal" style="text-shadow:0 0 30px rgba(255,193,66,0.15);">What I Offer</h3>
 
-
-  <!-- ===== SERVICES GRID + STATS ===== -->
-  <section id="services" class="px-6 md:px-12 py-24 md:py-32 max-w-7xl mx-auto">
-    <h2 class="font-display text-5xl md:text-7xl uppercase text-cream text-center mb-14 reveal" style="text-shadow:0 0 40px rgba(255,193,66,0.15);">What I Offer</h2>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
-
-      <!-- Card: Group Classes -->
-      <div class="service-card reveal" tabindex="0" id="groupClassesCard" role="button" aria-label="View Group Classes videos">
-        <div class="text-4xl mb-4">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#FFC142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M5.5 21a6.5 6.5 0 0 1 13 0"/><circle cx="4" cy="9" r="2.5"/><path d="M2 21a4 4 0 0 1 4.5-4"/><circle cx="20" cy="9" r="2.5"/><path d="M22 21a4 4 0 0 0-4.5-4"/></svg>
-        </div>
-        <h3 class="font-display text-xl uppercase text-cream mb-2">Group Classes</h3>
-        <p class="font-body text-cream/70 text-sm leading-relaxed">In-person salsa, bachata, and hip hop group sessions for all skill levels.</p>
-      </div>
-
-      <!-- Card: Private Lessons -->
-      <div class="service-card reveal" tabindex="0" style="transition-delay:0.1s;" id="privateLessonsCard" role="button" aria-label="View Private Lessons and book a session">
-        <div class="text-4xl mb-4">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#FFC142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg>
-        </div>
-        <h3 class="font-display text-xl uppercase text-cream mb-2">Private Lessons</h3>
-        <p class="font-body text-cream/70 text-sm leading-relaxed">One-on-one personalized instruction tailored to your goals and pace.</p>
-      </div>
-
-      <!-- Card: Work Functions -->
-      <div class="service-card reveal" tabindex="0" style="transition-delay:0.2s;" id="workFunctionsCard" role="button" aria-label="View Work Functions and inquire about booking">
-        <div class="text-4xl mb-4">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#FFC142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><path d="M12 12v4"/><path d="M2 12h20"/></svg>
-        </div>
-        <h3 class="font-display text-xl uppercase text-cream mb-2">Work Functions</h3>
-        <p class="font-body text-cream/70 text-sm leading-relaxed">Corporate events, team building activities, and live entertainment.</p>
-      </div>
-
-      <!-- Card: Socials -->
-      <div class="service-card reveal" tabindex="0" style="transition-delay:0.3s;" id="socialsCard" role="button" aria-label="View upcoming and past socials">
-        <div class="text-4xl mb-4">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#FFC142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-        </div>
-        <h3 class="font-display text-xl uppercase text-cream mb-2">Socials</h3>
-        <p class="font-body text-cream/70 text-sm leading-relaxed">Community dance events and social nights -- come dance, connect, celebrate.</p>
-      </div>
-
-    </div>
-
-    <!-- Stats Row -->
-    <div class="flex flex-col sm:flex-row items-center justify-center gap-12 sm:gap-20 reveal">
-      <div class="text-center">
-        <span class="font-display text-5xl md:text-6xl text-caribbean-gold stat-number" data-target="500">0</span><span class="font-display text-5xl md:text-6xl text-caribbean-gold">+</span>
-        <p class="font-body text-cream/60 text-sm mt-1 uppercase tracking-wider">Students Taught</p>
-      </div>
-      <div class="text-center">
-        <span class="font-display text-5xl md:text-6xl text-caribbean-gold stat-number" data-target="8">0</span><span class="font-display text-5xl md:text-6xl text-caribbean-gold">+</span>
-        <p class="font-body text-cream/60 text-sm mt-1 uppercase tracking-wider">Years Performing</p>
-      </div>
-      <div class="text-center">
-        <span class="font-display text-5xl md:text-6xl text-caribbean-gold stat-number" data-target="100">0</span><span class="font-display text-5xl md:text-6xl text-caribbean-gold">+</span>
-        <p class="font-body text-cream/60 text-sm mt-1 uppercase tracking-wider">Events &amp; Shows</p>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- ===== MEDIA SECTION ===== -->
-  <section id="media" class="px-6 md:px-12 py-24 md:py-32 max-w-7xl mx-auto">
-    <h2 class="font-display text-5xl md:text-7xl uppercase text-cream text-center mb-14 reveal" style="text-shadow:0 0 40px rgba(239,0,0,0.15);">Music &amp; Performance</h2>
-
-    <!-- YouTube Videos — 3 side-by-side, minimal branding -->
-    <div class="max-w-7xl mx-auto mb-16">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-        <div class="reveal">
-          <div class="rounded-xl overflow-hidden" style="aspect-ratio:16/9;border:1px solid rgba(255,193,66,0.1);">
-            <iframe width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/KAlbrd9IpsU?modestbranding=1&rel=0&showinfo=0&color=white" title="Roshay Entertainment" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="display:block;"></iframe>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
+        <!-- Card: Group Classes -->
+        <div class="service-card reveal" tabindex="0" id="groupClassesCard" role="button" aria-label="View Group Classes videos">
+          <div class="text-4xl mb-4">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#FFC142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M5.5 21a6.5 6.5 0 0 1 13 0"/><circle cx="4" cy="9" r="2.5"/><path d="M2 21a4 4 0 0 1 4.5-4"/><circle cx="20" cy="9" r="2.5"/><path d="M22 21a4 4 0 0 0-4.5-4"/></svg>
           </div>
+          <h3 class="font-display text-xl uppercase text-cream mb-2">Group Classes</h3>
+          <p class="font-body text-cream/70 text-sm leading-relaxed">In-person salsa, bachata, and hip hop group sessions for all skill levels.</p>
         </div>
-        <div class="reveal" style="transition-delay:0.1s;">
-          <div class="rounded-xl overflow-hidden" style="aspect-ratio:16/9;border:1px solid rgba(255,193,66,0.1);">
-            <iframe width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/S1jPxdA4KI4?modestbranding=1&rel=0&showinfo=0&color=white" title="Roshay Entertainment" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="display:block;"></iframe>
+        <!-- Card: Private Lessons -->
+        <div class="service-card reveal" tabindex="0" style="transition-delay:0.1s;" id="privateLessonsCard" role="button" aria-label="View Private Lessons and book a session">
+          <div class="text-4xl mb-4">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#FFC142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg>
           </div>
+          <h3 class="font-display text-xl uppercase text-cream mb-2">Private Lessons</h3>
+          <p class="font-body text-cream/70 text-sm leading-relaxed">One-on-one personalized instruction tailored to your goals and pace.</p>
         </div>
-        <div class="reveal" style="transition-delay:0.2s;">
-          <div class="rounded-xl overflow-hidden" style="aspect-ratio:16/9;border:1px solid rgba(255,193,66,0.1);">
-            <iframe width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/crbZXMulYWE?modestbranding=1&rel=0&showinfo=0&color=white" title="Roshay Entertainment" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="display:block;"></iframe>
+        <!-- Card: Work Functions -->
+        <div class="service-card reveal" tabindex="0" style="transition-delay:0.2s;" id="workFunctionsCard" role="button" aria-label="View Work Functions and inquire about booking">
+          <div class="text-4xl mb-4">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#FFC142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><path d="M12 12v4"/><path d="M2 12h20"/></svg>
           </div>
+          <h3 class="font-display text-xl uppercase text-cream mb-2">Work Functions</h3>
+          <p class="font-body text-cream/70 text-sm leading-relaxed">Corporate events, team building activities, and live entertainment.</p>
+        </div>
+        <!-- Card: Socials -->
+        <div class="service-card reveal" tabindex="0" style="transition-delay:0.3s;" id="socialsCard" role="button" aria-label="View upcoming and past socials">
+          <div class="text-4xl mb-4">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#FFC142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+          </div>
+          <h3 class="font-display text-xl uppercase text-cream mb-2">Socials</h3>
+          <p class="font-body text-cream/70 text-sm leading-relaxed">Community dance events and social nights -- come dance, connect, celebrate.</p>
         </div>
       </div>
-    </div>
 
-    <!-- Track Cards -->
-    <div class="mb-16 reveal">
-      <div class="flex overflow-x-auto gap-4 pb-4" style="-webkit-overflow-scrolling:touch;">
-        <div class="track-card" tabindex="0">
-          <img src="https://placehold.co/200x200/141414/ef0000?text=Track+1" alt="Track 1" class="w-[200px] h-[200px] rounded-lg object-cover" style="box-shadow:0 4px 16px rgba(0,0,0,0.5);"/>
-          <p class="font-body text-cream text-sm mt-2">Track One</p>
-          <span class="font-body text-cream/40 text-xs">Hip Hop</span>
+      <!-- Stats Row -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-12 sm:gap-20 reveal">
+        <div class="text-center">
+          <span class="font-display text-5xl md:text-6xl text-caribbean-gold stat-number" data-target="500">0</span><span class="font-display text-5xl md:text-6xl text-caribbean-gold">+</span>
+          <p class="font-body text-cream/60 text-sm mt-1 uppercase tracking-wider">Students Taught</p>
         </div>
-        <div class="track-card" tabindex="0">
-          <img src="https://placehold.co/200x200/141414/ef0000?text=Track+2" alt="Track 2" class="w-[200px] h-[200px] rounded-lg object-cover" style="box-shadow:0 4px 16px rgba(0,0,0,0.5);"/>
-          <p class="font-body text-cream text-sm mt-2">Track Two</p>
-          <span class="font-body text-cream/40 text-xs">Reggaeton</span>
+        <div class="text-center">
+          <span class="font-display text-5xl md:text-6xl text-caribbean-gold stat-number" data-target="8">0</span><span class="font-display text-5xl md:text-6xl text-caribbean-gold">+</span>
+          <p class="font-body text-cream/60 text-sm mt-1 uppercase tracking-wider">Years Performing</p>
         </div>
-        <div class="track-card" tabindex="0">
-          <img src="https://placehold.co/200x200/141414/ef0000?text=Track+3" alt="Track 3" class="w-[200px] h-[200px] rounded-lg object-cover" style="box-shadow:0 4px 16px rgba(0,0,0,0.5);"/>
-          <p class="font-body text-cream text-sm mt-2">Track Three</p>
-          <span class="font-body text-cream/40 text-xs">Rap</span>
-        </div>
-        <div class="track-card" tabindex="0">
-          <img src="https://placehold.co/200x200/141414/ef0000?text=Track+4" alt="Track 4" class="w-[200px] h-[200px] rounded-lg object-cover" style="box-shadow:0 4px 16px rgba(0,0,0,0.5);"/>
-          <p class="font-body text-cream text-sm mt-2">Track Four</p>
-          <span class="font-body text-cream/40 text-xs">Salsa</span>
+        <div class="text-center">
+          <span class="font-display text-5xl md:text-6xl text-caribbean-gold stat-number" data-target="100">0</span><span class="font-display text-5xl md:text-6xl text-caribbean-gold">+</span>
+          <p class="font-body text-cream/60 text-sm mt-1 uppercase tracking-wider">Events &amp; Shows</p>
         </div>
       </div>
-    </div>
 
-    <!-- Spotify Embed -->
-    <div class="max-w-lg mx-auto reveal">
-      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/artist/5JNwuIC1G493YYlfwjR2HA?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
   </section>
 
