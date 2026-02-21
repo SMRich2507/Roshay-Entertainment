@@ -1468,18 +1468,13 @@
         const matrix = new DOMMatrix(style.transform);
         const scrollX = Math.abs(matrix.m41);
         const clipWidth = track.scrollWidth / (clipCount * 2);
-        const activeIndex = Math.floor(scrollX / clipWidth) % clipCount;
+        // Reverse index so active dot moves left (same direction as reel)
+        const rawIndex = Math.floor(scrollX / clipWidth) % clipCount;
+        const activeIndex = (clipCount - 1) - rawIndex;
 
         dots.forEach(function(d, i) {
           d.classList.toggle('active', i === activeIndex);
         });
-
-        // Translate the dots row in the same direction as the reel
-        const progress = (scrollX % (clipWidth * clipCount)) / (clipWidth * clipCount);
-        const dotsRowWidth = dotsContainer.scrollWidth;
-        const wrapperWidth = dotsWrapper.offsetWidth;
-        const maxShift = Math.max(0, dotsRowWidth - wrapperWidth);
-        dotsContainer.style.transform = 'translateX(-' + (progress * maxShift) + 'px)';
 
         dotRAF = requestAnimationFrame(updateDots);
       }
