@@ -626,19 +626,15 @@
     }
     /* Progress dots */
     .reel-dots-wrapper {
-      overflow-x: auto;
-      overflow-y: hidden;
-      -webkit-overflow-scrolling: touch;
+      overflow: hidden;
       padding: 1rem 1.5rem;
-      scrollbar-width: none;
     }
-    .reel-dots-wrapper::-webkit-scrollbar { display: none; }
     .reel-dots {
       display: flex;
       gap: 10px;
       width: max-content;
       margin: 0 auto;
-      cursor: grab;
+      transition: transform 0.1s linear;
     }
     .reel-dots.dragging { cursor: grabbing; }
     .reel-dot {
@@ -1465,29 +1461,25 @@
       // Duplicate clips for seamless infinite scroll
       track.innerHTML += track.innerHTML;
 
-      // Track scroll position and update active dot
+      // Track scroll position and update active dot + translate dots in sync
       let dotRAF;
       function updateDots() {
         const style = getComputedStyle(track);
         const matrix = new DOMMatrix(style.transform);
         const scrollX = Math.abs(matrix.m41);
         const clipWidth = track.scrollWidth / (clipCount * 2);
-        // Which clip is at the left edge of the viewport
         const activeIndex = Math.floor(scrollX / clipWidth) % clipCount;
 
         dots.forEach(function(d, i) {
           d.classList.toggle('active', i === activeIndex);
         });
 
-        // Auto-scroll dots wrapper to keep active dot visible
-        const activeDot = dots[activeIndex];
-        if (activeDot && dotsWrapper) {
-          const dotLeft = activeDot.offsetLeft;
-          const dotW = activeDot.offsetWidth;
-          const wW = dotsWrapper.offsetWidth;
-          const scrollTarget = dotLeft - wW / 2 + dotW / 2;
-          dotsWrapper.scrollLeft = scrollTarget;
-        }
+        // Translate the dots row in the same direction as the reel
+        const progress = (scrollX % (clipWidth * clipCount)) / (clipWidth * clipCount);
+        const dotsRowWidth = dotsContainer.scrollWidth;
+        const wrapperWidth = dotsWrapper.offsetWidth;
+        const maxShift = Math.max(0, dotsRowWidth - wrapperWidth);
+        dotsContainer.style.transform = 'translateX(-' + (progress * maxShift) + 'px)';
 
         dotRAF = requestAnimationFrame(updateDots);
       }
