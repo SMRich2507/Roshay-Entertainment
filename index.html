@@ -1092,7 +1092,7 @@
       </div>
 
       <!-- Card: Work Functions -->
-      <div class="service-card reveal" tabindex="0" style="transition-delay:0.2s;">
+      <div class="service-card reveal" tabindex="0" style="transition-delay:0.2s;" id="workFunctionsCard" role="button" aria-label="View Work Functions and inquire about booking">
         <div class="text-4xl mb-4">
           <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#FFC142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><path d="M12 12v4"/><path d="M2 12h20"/></svg>
         </div>
@@ -1586,6 +1586,144 @@
       const track = document.getElementById('plReelTrack');
       const dotsContainer = document.getElementById('plDots');
       const dotsWrapper = document.getElementById('plDotsWrapper');
+      if (!card || !modal || !closeBtn || !track || !dotsContainer) return;
+
+      const originalClips = track.querySelectorAll('.reel-clip');
+      const clipCount = originalClips.length;
+
+      for (let i = 0; i < clipCount; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'reel-dot' + (i === (clipCount - 1) ? ' active' : '');
+        dot.dataset.index = i;
+        dotsContainer.appendChild(dot);
+      }
+      const dots = dotsContainer.querySelectorAll('.reel-dot');
+
+      track.innerHTML += track.innerHTML;
+
+      let dotRAF;
+      function updateDots() {
+        const style = getComputedStyle(track);
+        const matrix = new DOMMatrix(style.transform);
+        const scrollX = Math.abs(matrix.m41);
+        const clipWidth = track.scrollWidth / (clipCount * 2);
+        const rawIndex = Math.floor(scrollX / clipWidth) % clipCount;
+        const activeIndex = (clipCount - 1) - rawIndex;
+        dots.forEach(function(d, i) { d.classList.toggle('active', i === activeIndex); });
+        dotRAF = requestAnimationFrame(updateDots);
+      }
+
+      function openModal() {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        closeBtn.focus();
+        dotRAF = requestAnimationFrame(updateDots);
+      }
+      function closeModal() {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+        cancelAnimationFrame(dotRAF);
+        card.focus();
+      }
+
+      card.addEventListener('click', openModal);
+      card.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(); }
+      });
+      closeBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) closeModal();
+      });
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+      });
+    })();
+  </script>
+
+  <!-- ===== WORK FUNCTIONS MODAL ===== -->
+  <div class="service-modal-overlay" id="workFunctionsModal">
+    <div class="pl-modal">
+      <!-- Floating title + close -->
+      <div class="reel-title">
+        <h3 class="font-display text-xl md:text-2xl uppercase text-cream tracking-[0.15em]" style="text-shadow:0 2px 12px rgba(0,0,0,0.8);">Work Functions</h3>
+        <button class="service-modal-close" id="wfModalClose" aria-label="Close modal">&times;</button>
+      </div>
+
+      <!-- Auto-scrolling reel -->
+      <div class="reel-track-wrapper">
+        <div class="reel-track" id="wfReelTrack">
+          <!-- Clip 1 -->
+          <div class="reel-clip">
+            <div class="reel-clip-inner" style="background:linear-gradient(135deg,#1a0a0a 0%,#0A0A0A 100%);">
+              <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="rgba(255,193,66,0.3)" stroke-width="1"><polygon points="5,3 19,12 5,21"/></svg>
+            </div>
+            <div class="reel-clip-label">
+              <span class="font-display text-sm uppercase tracking-wider text-cream/60">Corporate Event</span>
+            </div>
+          </div>
+          <!-- Clip 2 -->
+          <div class="reel-clip">
+            <div class="reel-clip-inner" style="background:linear-gradient(135deg,#0a0a1a 0%,#0A0A0A 100%);">
+              <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="rgba(255,193,66,0.3)" stroke-width="1"><polygon points="5,3 19,12 5,21"/></svg>
+            </div>
+            <div class="reel-clip-label">
+              <span class="font-display text-sm uppercase tracking-wider text-cream/60">Team Building</span>
+            </div>
+          </div>
+          <!-- Clip 3 -->
+          <div class="reel-clip">
+            <div class="reel-clip-inner" style="background:linear-gradient(135deg,#1a0f0a 0%,#0A0A0A 100%);">
+              <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="rgba(255,193,66,0.3)" stroke-width="1"><polygon points="5,3 19,12 5,21"/></svg>
+            </div>
+            <div class="reel-clip-label">
+              <span class="font-display text-sm uppercase tracking-wider text-cream/60">Live Performance</span>
+            </div>
+          </div>
+          <!-- Clip 4 -->
+          <div class="reel-clip">
+            <div class="reel-clip-inner" style="background:linear-gradient(135deg,#0f0a1a 0%,#0A0A0A 100%);">
+              <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="rgba(255,193,66,0.3)" stroke-width="1"><polygon points="5,3 19,12 5,21"/></svg>
+            </div>
+            <div class="reel-clip-label">
+              <span class="font-display text-sm uppercase tracking-wider text-cream/60">Holiday Party</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dots -->
+      <div class="reel-dots-wrapper" id="wfDotsWrapper">
+        <div class="reel-dots" id="wfDots"></div>
+      </div>
+
+      <!-- Email Booking Section -->
+      <div class="pl-booking">
+        <div class="pl-booking-divider"></div>
+        <h4 class="font-display text-2xl md:text-3xl uppercase text-cream tracking-wider mb-2">Book For Your Event</h4>
+        <p class="font-body text-cream/50 text-sm max-w-md mx-auto mb-6">Looking for live entertainment, team building, or a dance experience for your next corporate event? Reach out and let's make it happen.</p>
+
+        <div class="pl-calendly-wrap">
+          <div class="pl-calendly-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#FFC142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="4" width="20" height="16" rx="2"/>
+              <path d="M22 7l-10 7L2 7"/>
+            </svg>
+            <a href="mailto:booking@roshayentertainment.com?subject=Work%20Function%20Booking%20Inquiry" class="pl-book-btn">Send Booking Inquiry</a>
+            <span class="font-body text-cream/30 text-xs">booking@roshayentertainment.com</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===== WORK FUNCTIONS MODAL =====
+    (function() {
+      const card = document.getElementById('workFunctionsCard');
+      const modal = document.getElementById('workFunctionsModal');
+      const closeBtn = document.getElementById('wfModalClose');
+      const track = document.getElementById('wfReelTrack');
+      const dotsContainer = document.getElementById('wfDots');
       if (!card || !modal || !closeBtn || !track || !dotsContainer) return;
 
       const originalClips = track.querySelectorAll('.reel-clip');
